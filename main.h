@@ -23,6 +23,7 @@ private:
     QPixmap pixmap;
     Canvas *canvas;
 
+    int prev_btn=0;
     QButtonGroup *toolBtnGr;
     QList<Tool*> toolList;
     PencilTool *pencilTool;

@@ -1,4 +1,6 @@
 #include "tools.h"
+#include <QLabel>
+#include <QVBoxLayout>
 
 Tool:: Tool(QObject *parent) : QObject(parent)
 {
@@ -15,7 +17,6 @@ PencilTool:: init(QPixmap& pm, QColor fg, QColor )
 {
     pixmap = pm;
     fg_color = fg;
-    //bg_color = bg;
 }
 
 void
@@ -27,7 +28,6 @@ void
 PencilTool:: setColors(QColor fg, QColor)
 {
     fg_color = fg;
-    //bg;
 }
 
 void
@@ -40,7 +40,7 @@ PencilTool:: onMousePress(QPoint pos)
 void
 PencilTool:: onMouseRelease(QPoint pos)
 {
-    Q_UNUSED(pos);
+    Q_UNUSED(pos);              // Used to supress unused variable warning;
     mouse_pressed = false;
     emit imageChanged(pixmap);
 }
@@ -61,6 +61,7 @@ PencilTool:: onMouseMove(QPoint pos)
 BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 {
     mouse_pressed = false;
+    pen.setWidth(5);
 }
 
 void
@@ -68,19 +69,27 @@ BrushTool:: init(QPixmap& pm, QColor fg, QColor )
 {
     pixmap = pm;
     fg_color = fg;
-    //bg_color = bg;
+    pen.setColor(fg);
+    brushManager = new BrushManager( qobject_cast<QWidget*>(this->parent()) );
+    connect(brushManager, SIGNAL(settingsChanged()), this, SLOT(onSettingsChange()));
 }
 
 void
 BrushTool:: finish()
 {
+    brushManager->deleteLater();
 }
 
 void
 BrushTool:: setColors(QColor fg, QColor)
 {
     fg_color = fg;
-    //Q_UNUSED(bg);
+}
+
+void
+BrushTool:: onSettingsChange()
+{
+    pen.setWidth(brushManager->thicknessSlider->value());
 }
 
 void
@@ -102,8 +111,6 @@ void
 BrushTool:: onMouseMove(QPoint pos)
 {
     if (!mouse_pressed) return;
-    QPen pen(fg_color);
-    pen.setWidth(5);
     painter.begin(&pixmap);
     painter.setPen(pen);
     painter.drawLine(start, pos);
@@ -112,4 +119,20 @@ BrushTool:: onMouseMove(QPoint pos)
     start = pos;
 }
 
+BrushManager:: BrushManager(QWidget *parent) : QWidget(parent)
+{
+    parent->layout()->addWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    QLabel *label = new QLabel("Thickness:", this);
+    thicknessSlider = new QSlider(Qt::Horizontal,this);
+    thicknessSlider->setRange(2, 64);
+    layout->addWidget(label);
+    layout->addWidget(thicknessSlider);
+    connect(thicknessSlider, SIGNAL(valueChanged(int)), this, SLOT(onValueChange(int)));
+}
 
+void
+BrushManager:: onValueChange(int)
+{
+    emit settingsChanged();
+}

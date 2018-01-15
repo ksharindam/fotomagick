@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QPainter>
+#include <QSlider>
 
 QT_BEGIN_NAMESPACE
 
@@ -48,6 +49,18 @@ signals:
     void canvasUpdated(QPixmap);
 };
 
+class BrushManager : public QWidget
+{
+    Q_OBJECT
+public:
+    BrushManager(QWidget *parent);
+    QSlider *thicknessSlider;
+private slots:
+    void onValueChange(int);
+signals:
+    void settingsChanged();
+};
+
 class BrushTool : public Tool
 {
     Q_OBJECT
@@ -59,13 +72,16 @@ public:
 private:
     QPoint start;
     QPixmap pixmap;
+    QPen pen;
     QPainter painter;
     bool mouse_pressed;
     QColor fg_color;
-
+    BrushManager *brushManager;
     void onMousePress(QPoint);
     void onMouseRelease(QPoint);
     void onMouseMove(QPoint);
+private slots:
+    void onSettingsChange();
 signals:
     void imageChanged(QPixmap);
     void canvasUpdated(QPixmap);
