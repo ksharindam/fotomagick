@@ -8,22 +8,28 @@
 
 QT_BEGIN_NAMESPACE
 
-/* This is the base class for all tools*/
+/* This is the base class for all tools
+TODO : manage image scaling
+*/
 class Tool : public QObject
 {
     Q_OBJECT
 public:
     Tool(QObject *parent);
+    void setPixmap(QPixmap& pm);
     virtual void init(QPixmap& pixmap, QColor fg, QColor bg) = 0;
     virtual void finish() = 0;
     virtual void setColors(QColor fg, QColor bg) = 0;
-private slots:
+
+    QPixmap pixmap;
+public slots:
     virtual void onMousePress(QPoint) = 0;
     virtual void onMouseRelease(QPoint) = 0;
     virtual void onMouseMove(QPoint) = 0;
 signals:
     void imageChanged(QPixmap);
     void canvasUpdated(QPixmap);
+    void maskCreated(QImage);       // for selection tools only
 };
 
 class PencilTool : public Tool
@@ -34,19 +40,15 @@ public:
     void init(QPixmap& pixmap, QColor fg, QColor bg);
     void finish();
     void setColors(QColor fg, QColor bg);
+    void onMousePress(QPoint);
+    void onMouseRelease(QPoint);
+    void onMouseMove(QPoint);
 private:
     QPoint start;
-    QPixmap pixmap;
     QPainter painter;
     bool mouse_pressed;
     QColor fg_color;
 
-    void onMousePress(QPoint);
-    void onMouseRelease(QPoint);
-    void onMouseMove(QPoint);
-signals:
-    void imageChanged(QPixmap);
-    void canvasUpdated(QPixmap);
 };
 
 class BrushManager : public QWidget
@@ -69,22 +71,18 @@ public:
     void init(QPixmap& pixmap, QColor fg, QColor bg);
     void finish();
     void setColors(QColor fg, QColor bg);
+    void onMousePress(QPoint);
+    void onMouseRelease(QPoint);
+    void onMouseMove(QPoint);
 private:
     QPoint start;
-    QPixmap pixmap;
     QPen pen;
     QPainter painter;
     bool mouse_pressed;
     QColor fg_color;
     BrushManager *brushManager;
-    void onMousePress(QPoint);
-    void onMouseRelease(QPoint);
-    void onMouseMove(QPoint);
 private slots:
     void onSettingsChange();
-signals:
-    void imageChanged(QPixmap);
-    void canvasUpdated(QPixmap);
 };
 
 QT_END_NAMESPACE

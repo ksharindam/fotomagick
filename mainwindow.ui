@@ -26,26 +26,6 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="2" column="0">
-          <widget class="QPushButton" name="lineBtn">
-           <property name="toolTip">
-            <string>Straight Line</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/line.png</normaloff>:/icons/line.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QPushButton" name="pencilBtn">
            <property name="toolTip">
@@ -54,66 +34,6 @@
            <property name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/icons/pencil.png</normaloff>:/icons/pencil.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QPushButton" name="rectBtn">
-           <property name="toolTip">
-            <string>Rectangle</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/rectangle.png</normaloff>:/icons/rectangle.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QPushButton" name="polygonBtn">
-           <property name="toolTip">
-            <string>Polygon</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/polygon.png</normaloff>:/icons/polygon.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QPushButton" name="polylineBtn">
-           <property name="toolTip">
-            <string>Polyline</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/polyline.png</normaloff>:/icons/polyline.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -146,26 +66,6 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="ovalBtn">
-           <property name="toolTip">
-            <string>Oval</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/oval.png</normaloff>:/icons/oval.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0" colspan="3">
           <widget class="QLabel" name="label">
            <property name="text">
@@ -173,7 +73,7 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="2" column="0">
           <widget class="QPushButton" name="floodfillBtn">
            <property name="toolTip">
             <string>Floodfill</string>
@@ -216,53 +116,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
-          <widget class="QPushButton" name="roundedrectBtn">
-           <property name="toolTip">
-            <string>Rounded Rect</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/roundedrect.png</normaloff>:/icons/roundedrect.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="splineBtn">
-           <property name="toolTip">
-            <string>Curved Line</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/curve.png</normaloff>:/icons/curve.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
+         <item row="2" column="1">
           <widget class="QPushButton" name="sprayBtn">
            <property name="toolTip">
             <string>Color Spray</string>
@@ -285,7 +139,7 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="2">
+         <item row="2" column="2">
           <widget class="QPushButton" name="textBtn">
            <property name="text">
             <string/>
@@ -293,49 +147,6 @@
            <property name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/icons/text.png</normaloff>:/icons/text.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QPushButton" name="arcBtn">
-           <property name="toolTip">
-            <string>Arc</string>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/arc.png</normaloff>:/icons/arc.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QPushButton" name="circleBtn">
-           <property name="toolTip">
-            <string>Centered Circle</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/icons/circle.png</normaloff>:/icons/circle.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -418,10 +229,17 @@
      <string>View</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuFilters">
+    <property name="title">
+     <string>Filters</string>
+    </property>
+    <addaction name="actionAuto_Equalize"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuTransform"/>
+   <addaction name="menuFilters"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
@@ -446,6 +264,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAuto_Equalize">
+   <property name="text">
+    <string>Auto Equalize</string>
    </property>
   </action>
  </widget>

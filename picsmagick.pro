@@ -5,10 +5,11 @@
 TEMPLATE = app
 TARGET = picsmagick
 DEPENDPATH += .
-INCLUDEPATH += .
+INCLUDEPATH += /usr/include/GraphicsMagick
+LIBS += -lGraphicsMagick++
 
 # Input
-HEADERS += canvas.h main.h exif.h tools.h
+HEADERS += canvas.h main.h exif.h tools.h filters.h
 FORMS += mainwindow.ui
-SOURCES += canvas.cpp main.cpp exif.cpp tools.cpp
+SOURCES += canvas.cpp main.cpp exif.cpp tools.cpp filters.cpp
 RESOURCES += resources.qrc

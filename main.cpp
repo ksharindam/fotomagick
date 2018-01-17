@@ -12,6 +12,7 @@ Window:: Window()
     layout->setContentsMargins(0, 0, 0, 0);
     canvas = new Canvas(this);
     layout->addWidget(canvas);
+    filters = new Filters(this);
     toolBtnGr = new QButtonGroup(this);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
     toolBtnGr->addButton(brushBtn);    // Button ids are added in this order... -2,-3,-4...
@@ -19,6 +20,8 @@ Window:: Window()
     brushTool = new BrushTool(frameColor);
     toolList << pencilTool << brushTool;
     connectSignals();
+    pencilBtn->setChecked(true);
+    onToolClick(-2);
 }
 
 void
@@ -27,9 +30,14 @@ Window:: connectSignals()
     connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
     connect(actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(actionAuto_Equalize, SIGNAL(triggered()), filters, SLOT(applyAutoEqualize()));
+    // signals from tool buttons
     connect(toolBtnGr, SIGNAL(buttonClicked(int)), this, SLOT(onToolClick(int)));
-    foreach (Tool *tool, toolList)
+    foreach (Tool *tool, toolList) {
         connect(tool, SIGNAL(canvasUpdated(QPixmap)), canvas, SLOT(setPixmap(QPixmap)));
+        connect(tool, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap)));
+    }
+    connect(filters, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap))); // Better to use qimage
 }
 
 void
@@ -50,6 +58,22 @@ Window:: onToolClick(int btn_id)
 }
 
 void
+Window:: onImageChange(QPixmap pm)
+{
+    // TODO : Add pixmap to undo cache
+    pixmap = pm;
+    canvas->setPixmap(pm);
+    filters->setPixmap(pm);
+    toolList[abs(prev_btn)-2]->setPixmap(pixmap);
+}
+/*
+void
+Window:: onImageChange(QImage image)
+{
+    onImageChange(QPixmap::fromImage(image));
+}*/
+
+void
 Window:: openFile()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Open Image", "",
@@ -64,8 +88,7 @@ Window:: openFile(QString filename)
     QImage new_image(filename);
     if (new_image.isNull()) return;
 
-    pixmap = QPixmap::fromImage(new_image);
-    canvas->setPixmap(pixmap);
+    onImageChange(new_image);
 }
 
 void
@@ -80,6 +103,7 @@ Window:: saveFile()
 
 int main(int argc, char *argv[])
 {
+    Magick::InitializeMagick(*argv);
     QApplication app(argc, argv);
     Window *win = new Window();
     win->resize(640, 600);

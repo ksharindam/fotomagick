@@ -1,9 +1,18 @@
 #include "tools.h"
 #include <QLabel>
 #include <QVBoxLayout>
+//#include <QBrush>
+//#include <QLinearGradient>
+//#include <cmath>
 
 Tool:: Tool(QObject *parent) : QObject(parent)
 {
+}
+
+void
+Tool:: setPixmap(QPixmap& pm)
+{
+    pixmap = pm;
 }
 
 // ****************** Pencil Tool ********************* //
@@ -62,6 +71,8 @@ BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 {
     mouse_pressed = false;
     pen.setWidth(5);
+    pen.setCapStyle(Qt::RoundCap);
+    //pen.setJoinStyle(Qt::RoundJoin);
 }
 
 void
