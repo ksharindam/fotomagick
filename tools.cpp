@@ -22,7 +22,7 @@ PencilTool:: PencilTool(QObject *parent) : Tool(parent)
 }
 
 void
-PencilTool:: init(QPixmap& pm, QColor fg, QColor )
+PencilTool:: init(QPixmap pm, QColor fg, QColor )
 {
     pixmap = pm;
     fg_color = fg;
@@ -76,7 +76,7 @@ BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 }
 
 void
-BrushTool:: init(QPixmap& pm, QColor fg, QColor )
+BrushTool:: init(QPixmap pm, QColor fg, QColor )
 {
     pixmap = pm;
     fg_color = fg;

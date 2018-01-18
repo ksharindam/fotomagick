@@ -17,7 +17,7 @@ class Tool : public QObject
 public:
     Tool(QObject *parent);
     void setPixmap(QPixmap& pm);
-    virtual void init(QPixmap& pixmap, QColor fg, QColor bg) = 0;
+    virtual void init(QPixmap pixmap, QColor fg, QColor bg) = 0;
     virtual void finish() = 0;
     virtual void setColors(QColor fg, QColor bg) = 0;
 
@@ -37,7 +37,7 @@ class PencilTool : public Tool
     Q_OBJECT
 public:
     PencilTool(QObject *parent);
-    void init(QPixmap& pixmap, QColor fg, QColor bg);
+    void init(QPixmap pixmap, QColor fg, QColor bg);
     void finish();
     void setColors(QColor fg, QColor bg);
     void onMousePress(QPoint);
@@ -68,7 +68,7 @@ class BrushTool : public Tool
     Q_OBJECT
 public:
     BrushTool(QObject *parent);
-    void init(QPixmap& pixmap, QColor fg, QColor bg);
+    void init(QPixmap pixmap, QColor fg, QColor bg);
     void finish();
     void setColors(QColor fg, QColor bg);
     void onMousePress(QPoint);

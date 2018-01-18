@@ -13,6 +13,7 @@ Window:: Window()
     canvas = new Canvas(this);
     layout->addWidget(canvas);
     filters = new Filters(this);
+    layerManager = new LayerManager(this);
     toolBtnGr = new QButtonGroup(this);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
     toolBtnGr->addButton(brushBtn);    // Button ids are added in this order... -2,-3,-4...
@@ -34,10 +35,13 @@ Window:: connectSignals()
     // signals from tool buttons
     connect(toolBtnGr, SIGNAL(buttonClicked(int)), this, SLOT(onToolClick(int)));
     foreach (Tool *tool, toolList) {
-        connect(tool, SIGNAL(canvasUpdated(QPixmap)), canvas, SLOT(setPixmap(QPixmap)));
-        connect(tool, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap)));
+        connect(tool, SIGNAL(canvasUpdated(QPixmap)), layerManager, SLOT(onCanvasUpdate(QPixmap)));
+        connect(tool, SIGNAL(imageChanged(QPixmap)),  this,         SLOT(onImageChange(QPixmap)));
     }
-    connect(filters, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap))); // Better to use qimage
+    // signals from tools and layer_manager
+    connect(filters, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap))); // TODO : use qimage
+    connect(layerManager, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap)));
+    connect(layerManager, SIGNAL(showImage(QPixmap)), canvas, SLOT(setPixmap(QPixmap)));
 }
 
 void
@@ -50,7 +54,7 @@ Window:: onToolClick(int btn_id)
         disconnect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[prev_btn], SLOT(onMouseRelease(QPoint)));
         disconnect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[prev_btn], SLOT(onMouseMove(QPoint)));
     }
-    toolList[abs(btn_id)-2]->init(pixmap, Qt::black, Qt::white);
+    toolList[abs(btn_id)-2]->init(layerManager->topLayer(), Qt::black, Qt::white);
     connect(canvas, SIGNAL(mousePressed(QPoint)), toolList[abs(btn_id)-2], SLOT(onMousePress(QPoint)));
     connect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseRelease(QPoint)));
     connect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseMove(QPoint)));
@@ -61,17 +65,10 @@ void
 Window:: onImageChange(QPixmap pm)
 {
     // TODO : Add pixmap to undo cache
-    pixmap = pm;
-    canvas->setPixmap(pm);
+    layerManager->onImageChange(pm);
     filters->setPixmap(pm);
-    toolList[abs(prev_btn)-2]->setPixmap(pixmap);
+    toolList[abs(prev_btn)-2]->setPixmap(pm);
 }
-/*
-void
-Window:: onImageChange(QImage image)
-{
-    onImageChange(QPixmap::fromImage(image));
-}*/
 
 void
 Window:: openFile()
@@ -97,7 +94,7 @@ Window:: saveFile()
     QString filename = QFileDialog::getSaveFileName(this, "Save Image", "",
                 "Image files (*.jpg *.png );;JPG Images (*.jpg *.jpeg);;PNG Images (*.png);;All files (*.*)" );
     if (!filename.isEmpty())
-        pixmap.save(filename);
+        layerManager->topLayer().save(filename);
 }
 
 

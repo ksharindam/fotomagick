@@ -4,6 +4,7 @@
 #include "canvas.h"
 #include "tools.h"
 #include "filters.h"
+#include "layer_manager.h"
 #include <QButtonGroup>
 
 
@@ -24,9 +25,10 @@ private slots:
     void onImageChange(QPixmap);
     void onImageChange(QImage image) { onImageChange(QPixmap::fromImage(image)); };
 private:
-    QPixmap pixmap;
+    //QPixmap pixmap;
     Canvas *canvas;
     Filters *filters;
+    LayerManager *layerManager;
 
     int prev_btn=0;
     QButtonGroup *toolBtnGr;

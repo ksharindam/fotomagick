@@ -31,7 +31,6 @@ Filters:: applyAutoEqualize()
     Magick::Image magickImage = QImage2Magick(pixmap.toImage());
     magickImage.equalize();
     QImage modifiedImage = Magick2QImage(magickImage);
-    //delete magickImage;
 
     emit imageChanged(QPixmap::fromImage(modifiedImage));
 }
