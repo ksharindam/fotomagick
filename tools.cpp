@@ -15,6 +15,12 @@ Tool:: setPixmap(QPixmap& pm)
     pixmap = pm;
 }
 
+void
+Tool:: setScale(float scale)
+{
+    scaleFactor = scale;
+}
+
 // ****************** Pencil Tool ********************* //
 PencilTool:: PencilTool(QObject *parent) : Tool(parent)
 {
@@ -22,9 +28,10 @@ PencilTool:: PencilTool(QObject *parent) : Tool(parent)
 }
 
 void
-PencilTool:: init(QPixmap pm, QColor fg, QColor )
+PencilTool:: init(QPixmap pm, float scale, QColor fg, QColor )
 {
     pixmap = pm;
+    scaleFactor = scale;
     fg_color = fg;
 }
 
@@ -59,7 +66,7 @@ PencilTool:: onMouseMove(QPoint pos)
 {
     if (!mouse_pressed) return;
     painter.begin(&pixmap);
-    painter.drawLine(start, pos);
+    painter.drawLine(start/scaleFactor, pos/scaleFactor);
     painter.end();
     emit canvasUpdated(pixmap);
     start = pos;
@@ -76,9 +83,10 @@ BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 }
 
 void
-BrushTool:: init(QPixmap pm, QColor fg, QColor )
+BrushTool:: init(QPixmap pm, float scale, QColor fg, QColor )
 {
     pixmap = pm;
+    scaleFactor = scale;
     fg_color = fg;
     pen.setColor(fg);
     brushManager = new BrushManager( qobject_cast<QWidget*>(this->parent()) );
@@ -124,7 +132,7 @@ BrushTool:: onMouseMove(QPoint pos)
     if (!mouse_pressed) return;
     painter.begin(&pixmap);
     painter.setPen(pen);
-    painter.drawLine(start, pos);
+    painter.drawLine(start/scaleFactor, pos/scaleFactor);
     painter.end();
     emit canvasUpdated(pixmap);
     start = pos;

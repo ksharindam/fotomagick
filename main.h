@@ -4,13 +4,11 @@
 #include "canvas.h"
 #include "tools.h"
 #include "filters.h"
-#include "layer_manager.h"
 #include <QButtonGroup>
 
 
 QT_BEGIN_NAMESPACE
 
-// TODO : multi layer image handling
 
 class Window : public QMainWindow, Ui_MainWindow
 {
@@ -24,18 +22,21 @@ private slots:
     void onToolClick(int);
     void onImageChange(QPixmap);
     void onImageChange(QImage image) { onImageChange(QPixmap::fromImage(image)); };
+    void zoomIn();
+    void zoomOut();
 private:
-    //QPixmap pixmap;
     Canvas *canvas;
     Filters *filters;
-    LayerManager *layerManager;
+    QList<Tool*> toolList;
 
+    float scaleFactor=1.0;
     int prev_btn=0;
     QButtonGroup *toolBtnGr;
-    QList<Tool*> toolList;
     PencilTool *pencilTool;
     BrushTool *brushTool;
+
     void connectSignals();
+    void setScale(float scale);
 };
 
 

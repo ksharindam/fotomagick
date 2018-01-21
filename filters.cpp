@@ -35,3 +35,13 @@ Filters:: applyAutoEqualize()
     emit imageChanged(QPixmap::fromImage(modifiedImage));
 }
 
+void
+Filters:: applyAutoContrast()
+{
+    Magick::Image magickImage = QImage2Magick(pixmap.toImage());
+    magickImage.normalize();
+    QImage modifiedImage = Magick2QImage(magickImage);
+
+    emit imageChanged(QPixmap::fromImage(modifiedImage));
+}
+

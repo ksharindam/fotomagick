@@ -15,6 +15,7 @@ private:
     QPixmap pixmap;
 public slots:
     void applyAutoEqualize();
+    void applyAutoContrast();
 signals:
     void imageChanged(QPixmap);
 };

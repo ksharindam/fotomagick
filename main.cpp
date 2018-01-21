@@ -6,17 +6,14 @@
 Window:: Window()
 {
     setupUi(this);
-    /*QHBoxLayout *layout1 = new QHBoxLayout(frameColor);
-    layout1->setContentsMargins(0, 0, 0, 0);*/
     QHBoxLayout *layout = new QHBoxLayout(scrollAreaWidgetContents);
     layout->setContentsMargins(0, 0, 0, 0);
     canvas = new Canvas(this);
     layout->addWidget(canvas);
     filters = new Filters(this);
-    layerManager = new LayerManager(this);
     toolBtnGr = new QButtonGroup(this);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
-    toolBtnGr->addButton(brushBtn);    // Button ids are added in this order... -2,-3,-4...
+    toolBtnGr->addButton(brushBtn);
     pencilTool = new PencilTool(frameColor);
     brushTool = new BrushTool(frameColor);
     toolList << pencilTool << brushTool;
@@ -31,17 +28,20 @@ Window:: connectSignals()
     connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFile()));
     connect(actionSave, SIGNAL(triggered()), this, SLOT(saveFile()));
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(actionZoom_In, SIGNAL(triggered()), this, SLOT(zoomIn()));
+    connect(actionZoom_Out, SIGNAL(triggered()), this, SLOT(zoomOut()));
+    // connect filters slots
     connect(actionAuto_Equalize, SIGNAL(triggered()), filters, SLOT(applyAutoEqualize()));
+    connect(actionAuto_Contrast, SIGNAL(triggered()), filters, SLOT(applyAutoContrast()));
     // signals from tool buttons
     connect(toolBtnGr, SIGNAL(buttonClicked(int)), this, SLOT(onToolClick(int)));
     foreach (Tool *tool, toolList) {
-        connect(tool, SIGNAL(canvasUpdated(QPixmap)), layerManager, SLOT(onCanvasUpdate(QPixmap)));
+        connect(tool, SIGNAL(canvasUpdated(QPixmap)), canvas, SLOT(onCanvasUpdate(QPixmap)));
         connect(tool, SIGNAL(imageChanged(QPixmap)),  this,         SLOT(onImageChange(QPixmap)));
     }
     // signals from tools and layer_manager
     connect(filters, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap))); // TODO : use qimage
-    connect(layerManager, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap)));
-    connect(layerManager, SIGNAL(showImage(QPixmap)), canvas, SLOT(setPixmap(QPixmap)));
+    connect(canvas, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap)));
 }
 
 void
@@ -54,7 +54,7 @@ Window:: onToolClick(int btn_id)
         disconnect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[prev_btn], SLOT(onMouseRelease(QPoint)));
         disconnect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[prev_btn], SLOT(onMouseMove(QPoint)));
     }
-    toolList[abs(btn_id)-2]->init(layerManager->topLayer(), Qt::black, Qt::white);
+    toolList[abs(btn_id)-2]->init(canvas->topLayer(), scaleFactor,Qt::black, Qt::white);
     connect(canvas, SIGNAL(mousePressed(QPoint)), toolList[abs(btn_id)-2], SLOT(onMousePress(QPoint)));
     connect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseRelease(QPoint)));
     connect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseMove(QPoint)));
@@ -62,10 +62,31 @@ Window:: onToolClick(int btn_id)
 }
 
 void
+Window:: setScale(float scale)
+{
+    scaleFactor = scale;
+    toolList[abs(prev_btn)-2]->setScale(scaleFactor);
+    canvas->setScale(scaleFactor);
+}
+
+void
+Window:: zoomIn()
+{
+    setScale(scaleFactor*6/5);
+    qDebug() << "zoom in" << scaleFactor;
+}
+
+void
+Window:: zoomOut()
+{
+    setScale(scaleFactor*5/6);
+    qDebug() << "zoom out" << scaleFactor;
+}
+
+void
 Window:: onImageChange(QPixmap pm)
 {
-    // TODO : Add pixmap to undo cache
-    layerManager->onImageChange(pm);
+    canvas->onImageChange(pm);
     filters->setPixmap(pm);
     toolList[abs(prev_btn)-2]->setPixmap(pm);
 }
@@ -94,7 +115,7 @@ Window:: saveFile()
     QString filename = QFileDialog::getSaveFileName(this, "Save Image", "",
                 "Image files (*.jpg *.png );;JPG Images (*.jpg *.jpeg);;PNG Images (*.png);;All files (*.*)" );
     if (!filename.isEmpty())
-        layerManager->topLayer().save(filename);
+        canvas->topLayer().save(filename);
 }
 
 
