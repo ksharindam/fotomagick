@@ -13,16 +13,17 @@ class Canvas : public QLabel
 public:
     Canvas(QWidget *parent);
     float scaleFactor = 1.0;
-    QList<QPixmap> layers;
-    QList<QPoint> layersPosition;
 
     QPixmap topLayer();
-    void compositeLayers();
     void setScale(float scale);
+    void setImage(QImage image);
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
     void mouseMoveEvent(QMouseEvent *ev);
-    void setImage(QImage image);
+private:
+    QList<QPixmap> layers;
+    QList<QPoint> layersPosition;
+    void compositeLayers();
 public slots:
     void onCanvasUpdate(QPixmap);
     void onImageChange(QPixmap);

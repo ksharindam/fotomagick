@@ -11,12 +11,17 @@ Window:: Window()
     canvas = new Canvas(this);
     layout->addWidget(canvas);
     filters = new Filters(this);
+    // group all tool buttons 
     toolBtnGr = new QButtonGroup(this);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
     toolBtnGr->addButton(brushBtn);
-    pencilTool = new PencilTool(frameColor);
-    brushTool = new BrushTool(frameColor);
-    toolList << pencilTool << brushTool;
+    toolBtnGr->addButton(floodfillBtn);
+    // create tools
+    PencilTool *pencilTool = new PencilTool(frameColor);
+    BrushTool *brushTool = new BrushTool(frameColor);
+    FloodfillTool *floodfillTool = new FloodfillTool(frameColor);
+    toolList << pencilTool << brushTool << floodfillTool;
+
     connectSignals();
     pencilBtn->setChecked(true);
     onToolClick(-2);
@@ -54,7 +59,7 @@ Window:: onToolClick(int btn_id)
         disconnect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[prev_btn], SLOT(onMouseRelease(QPoint)));
         disconnect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[prev_btn], SLOT(onMouseMove(QPoint)));
     }
-    toolList[abs(btn_id)-2]->init(canvas->topLayer(), scaleFactor,Qt::black, Qt::white);
+    toolList[abs(btn_id)-2]->init(canvas->topLayer(), canvas->scaleFactor,Qt::black, Qt::white);
     connect(canvas, SIGNAL(mousePressed(QPoint)), toolList[abs(btn_id)-2], SLOT(onMousePress(QPoint)));
     connect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseRelease(QPoint)));
     connect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseMove(QPoint)));
@@ -64,31 +69,28 @@ Window:: onToolClick(int btn_id)
 void
 Window:: setScale(float scale)
 {
-    scaleFactor = scale;
-    toolList[abs(prev_btn)-2]->setScale(scaleFactor);
-    canvas->setScale(scaleFactor);
+    canvas->setScale(scale);
+    toolList[abs(prev_btn)-2]->scaleFactor = scale;
 }
 
 void
 Window:: zoomIn()
 {
-    setScale(scaleFactor*6/5);
-    qDebug() << "zoom in" << scaleFactor;
+    setScale(canvas->scaleFactor*6/5);
 }
 
 void
 Window:: zoomOut()
 {
-    setScale(scaleFactor*5/6);
-    qDebug() << "zoom out" << scaleFactor;
+    setScale(canvas->scaleFactor*5/6);
 }
 
 void
 Window:: onImageChange(QPixmap pm)
 {
     canvas->onImageChange(pm);
-    filters->setPixmap(pm);
-    toolList[abs(prev_btn)-2]->setPixmap(pm);
+    filters->pixmap = pm;
+    toolList[abs(prev_btn)-2]->pixmap = pm;
 }
 
 void

@@ -15,15 +15,6 @@ QImage Magick2QImage(Magick::Image &image)
     return img;
 }
 
-Filters:: Filters(QObject *parent) : QObject(parent)
-{
-}
-
-void
-Filters:: setPixmap(QPixmap pm)
-{
-    pixmap = pm;
-}
 
 void
 Filters:: applyAutoEqualize()

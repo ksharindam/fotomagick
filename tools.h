@@ -15,14 +15,16 @@ class Tool : public QObject
 {
     Q_OBJECT
 public:
-    Tool(QObject *parent);
-    void setPixmap(QPixmap& pm);
-    virtual void init(QPixmap pixmap, float scale, QColor fg, QColor bg) = 0;
-    virtual void finish() = 0;
-    virtual void setColors(QColor fg, QColor bg) = 0;
-    void setScale(float scale);
     QPixmap pixmap;
     float scaleFactor;
+    QColor fg_color;
+    QColor bg_color;
+
+    Tool(QObject *parent) : QObject(parent) {};
+    virtual void init(QPixmap pixmap, float scale, QColor fg, QColor bg) = 0;
+    virtual void finish() = 0;
+protected:
+    QPainter painter;
 public slots:
     virtual void onMousePress(QPoint) = 0;
     virtual void onMouseRelease(QPoint) = 0;
@@ -37,21 +39,19 @@ class PencilTool : public Tool
 {
     Q_OBJECT
 public:
-    PencilTool(QObject *parent);
+    PencilTool(QObject *parent) : Tool(parent) { };
     void init(QPixmap pixmap, float scale, QColor fg, QColor bg);
-    void finish();
-    void setColors(QColor fg, QColor bg);
+    void finish() {};
     void onMousePress(QPoint);
     void onMouseRelease(QPoint);
     void onMouseMove(QPoint);
 private:
     QPoint start;
-    QPainter painter;
-    bool mouse_pressed;
-    QColor fg_color;
+    bool mouse_pressed = false;
 
 };
 
+//************************ Brush Tool *************************
 class BrushManager : public QWidget
 {
     Q_OBJECT
@@ -71,20 +71,31 @@ public:
     BrushTool(QObject *parent);
     void init(QPixmap pixmap, float scale, QColor fg, QColor bg);
     void finish();
-    void setColors(QColor fg, QColor bg);
     void onMousePress(QPoint);
     void onMouseRelease(QPoint);
     void onMouseMove(QPoint);
 private:
     QPoint start;
     QPen pen;
-    QPainter painter;
-    bool mouse_pressed;
-    QColor fg_color;
+    bool mouse_pressed = false;
     BrushManager *brushManager;
 private slots:
     void onSettingsChange();
 };
+
+// *************************** Floodfill Tool ***************************
+class FloodfillTool : public Tool
+{
+    Q_OBJECT
+public:
+    FloodfillTool(QObject *parent) : Tool(parent) {};
+    void init(QPixmap pixmap, float scale, QColor fg, QColor bg);
+    void finish() {};
+    void onMousePress(QPoint);
+    void onMouseRelease(QPoint) {};
+    void onMouseMove(QPoint) {};
+};
+
 
 QT_END_NAMESPACE
 

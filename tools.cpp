@@ -1,48 +1,18 @@
 #include "tools.h"
 #include <QLabel>
 #include <QVBoxLayout>
+#include <vector>
 //#include <QBrush>
 //#include <QLinearGradient>
 //#include <cmath>
 
-Tool:: Tool(QObject *parent) : QObject(parent)
-{
-}
-
-void
-Tool:: setPixmap(QPixmap& pm)
-{
-    pixmap = pm;
-}
-
-void
-Tool:: setScale(float scale)
-{
-    scaleFactor = scale;
-}
-
 // ****************** Pencil Tool ********************* //
-PencilTool:: PencilTool(QObject *parent) : Tool(parent)
-{
-    mouse_pressed = false;
-}
 
 void
 PencilTool:: init(QPixmap pm, float scale, QColor fg, QColor )
 {
     pixmap = pm;
     scaleFactor = scale;
-    fg_color = fg;
-}
-
-void
-PencilTool:: finish()
-{
-}
-
-void
-PencilTool:: setColors(QColor fg, QColor)
-{
     fg_color = fg;
 }
 
@@ -54,9 +24,8 @@ PencilTool:: onMousePress(QPoint pos)
 }
 
 void
-PencilTool:: onMouseRelease(QPoint pos)
+PencilTool:: onMouseRelease(QPoint)
 {
-    Q_UNUSED(pos);              // Used to supress unused variable warning;
     mouse_pressed = false;
     emit imageChanged(pixmap);
 }
@@ -100,12 +69,6 @@ BrushTool:: finish()
 }
 
 void
-BrushTool:: setColors(QColor fg, QColor)
-{
-    fg_color = fg;
-}
-
-void
 BrushTool:: onSettingsChange()
 {
     pen.setWidth(brushManager->thicknessSlider->value());
@@ -119,9 +82,8 @@ BrushTool:: onMousePress(QPoint pos)
 }
 
 void
-BrushTool:: onMouseRelease(QPoint pos)
+BrushTool:: onMouseRelease(QPoint)
 {
-    Q_UNUSED(pos);
     mouse_pressed = false;
     emit imageChanged(pixmap);
 }
@@ -154,4 +116,77 @@ void
 BrushManager:: onValueChange(int)
 {
     emit settingsChanged();
+}
+
+
+// ************************ Flood fill tool *************************
+/* Stack Based Scanline Floodfill 
+   Source : http://lodev.org/cgtutor/floodfill.html#Scanline_Floodfill_Algorithm_With_Stack
+*/
+void
+floodfill(QImage &img, int x, int y)
+{
+  int w = img.width();
+  int h = img.height();
+  std::vector<QPoint> q;
+  QRgb oldColor = qRgb(255, 255, 255);
+  QRgb newColor = qRgb(0, 0, 0);
+  //if (oldColor == newColor) return;
+  bool spanAbove, spanBelow;
+
+  q.push_back(QPoint(x, y));
+
+  while(!q.empty())
+  {
+    QPoint pt = q.back();
+    q.pop_back();
+    x = pt.x();
+    y = pt.y();
+    while (x >= 0 && img.pixel(x,y) == oldColor) x--;
+    x++;
+    spanAbove = spanBelow = 0;
+    while (x < w && img.pixel(x,y) == oldColor )
+    {
+      img.setPixel(x,y, newColor);
+      if(!spanAbove && y > 0 && img.pixel(x,y-1) == oldColor)
+      {
+        q.push_back(QPoint(x, y - 1));
+        spanAbove = 1;
+      }
+      else if (spanAbove && y > 0 && img.pixel(x,y-1) != oldColor)
+      {
+        spanAbove = 0;
+      }
+      if(!spanBelow && y < h - 1 && img.pixel(x,y+1) == oldColor)
+      {
+        q.push_back(QPoint(x, y + 1));
+        spanBelow = 1;
+      }
+      else if(spanBelow && y < h - 1 && img.pixel(x,y+1) != oldColor)
+      {
+        spanBelow = 0;
+      }
+      x++;
+    }
+  }
+
+}
+
+
+void
+FloodfillTool:: init(QPixmap pm, float scale, QColor fg, QColor )
+{
+    pixmap = pm;
+    scaleFactor = scale;
+    fg_color = fg;
+}
+
+
+void
+FloodfillTool:: onMousePress(QPoint pos)
+{
+    QImage img = pixmap.toImage();
+    floodfill(img, pos.x()/scaleFactor, pos.y()/scaleFactor);
+    pixmap = QPixmap::fromImage(img);
+    emit imageChanged(pixmap);
 }

@@ -9,9 +9,7 @@ class Filters : public QObject
 {
     Q_OBJECT
 public:
-    Filters(QObject *parent);
-    void setPixmap(QPixmap pm);
-private:
+    Filters(QObject *parent) : QObject(parent) {};
     QPixmap pixmap;
 public slots:
     void applyAutoEqualize();

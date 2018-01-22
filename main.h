@@ -29,11 +29,8 @@ private:
     Filters *filters;
     QList<Tool*> toolList;
 
-    float scaleFactor=1.0;
     int prev_btn=0;
     QButtonGroup *toolBtnGr;
-    PencilTool *pencilTool;
-    BrushTool *brushTool;
 
     void connectSignals();
     void setScale(float scale);
