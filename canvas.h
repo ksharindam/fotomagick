@@ -6,7 +6,7 @@
 
 QT_BEGIN_NAMESPACE
 
-// TODO : Add pixmap to undo cache
+// TODO : Add undo manager
 class Canvas : public QLabel
 {
     Q_OBJECT
@@ -24,14 +24,21 @@ private:
     QList<QPixmap> layers;
     QList<QPoint> layersPosition;
     void compositeLayers();
+    void rotate(float degree, Qt::Axis axis = Qt::ZAxis);
 public slots:
     void onCanvasUpdate(QPixmap);
     void onImageChange(QPixmap);
+    // Layer Management
     void addLayer(QPixmap pm);
     void newBlankLayer();
     void duplicateLayer();
     void deleteLayer();
     void mergeLayers();
+    // Image Transform
+    void rotateLeft();
+    void rotateRight();
+    void flip();
+    void flop();
 signals:
     void mousePressed(QPoint);
     void mouseReleased(QPoint);

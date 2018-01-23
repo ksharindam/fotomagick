@@ -45,7 +45,6 @@ PencilTool:: onMouseMove(QPoint pos)
 
 BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 {
-    mouse_pressed = false;
     pen.setWidth(5);
     pen.setCapStyle(Qt::RoundCap);
     //pen.setJoinStyle(Qt::RoundJoin);
@@ -124,14 +123,12 @@ BrushManager:: onValueChange(int)
    Source : http://lodev.org/cgtutor/floodfill.html#Scanline_Floodfill_Algorithm_With_Stack
 */
 void
-floodfill(QImage &img, int x, int y)
+floodfill(QImage &img, int x, int y, QRgb oldColor, QRgb newColor)
 {
+  if (oldColor == newColor) return;
   int w = img.width();
   int h = img.height();
   std::vector<QPoint> q;
-  QRgb oldColor = qRgb(255, 255, 255);
-  QRgb newColor = qRgb(0, 0, 0);
-  //if (oldColor == newColor) return;
   bool spanAbove, spanBelow;
 
   q.push_back(QPoint(x, y));
@@ -186,7 +183,7 @@ void
 FloodfillTool:: onMousePress(QPoint pos)
 {
     QImage img = pixmap.toImage();
-    floodfill(img, pos.x()/scaleFactor, pos.y()/scaleFactor);
+    floodfill(img, pos.x()/scaleFactor, pos.y()/scaleFactor, img.pixel(pos), fg_color.rgb());
     pixmap = QPixmap::fromImage(img);
     emit imageChanged(pixmap);
 }

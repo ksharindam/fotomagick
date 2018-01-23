@@ -35,6 +35,10 @@ Window:: connectSignals()
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(close()));
     connect(actionZoom_In, SIGNAL(triggered()), this, SLOT(zoomIn()));
     connect(actionZoom_Out, SIGNAL(triggered()), this, SLOT(zoomOut()));
+    connect(actionRotate_Left, SIGNAL(triggered()), canvas, SLOT(rotateLeft()));
+    connect(actionRotate_Right, SIGNAL(triggered()), canvas, SLOT(rotateRight()));
+    connect(actionFlip_Image, SIGNAL(triggered()), canvas, SLOT(flip()));
+    connect(actionFlop_Image, SIGNAL(triggered()), canvas, SLOT(flop()));
     // connect filters slots
     connect(actionAuto_Equalize, SIGNAL(triggered()), filters, SLOT(applyAutoEqualize()));
     connect(actionAuto_Contrast, SIGNAL(triggered()), filters, SLOT(applyAutoContrast()));

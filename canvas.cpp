@@ -47,8 +47,10 @@ Canvas:: compositeLayers()
 void
 Canvas:: onCanvasUpdate(QPixmap pm)
 {
-    if (scaleFactor!=1.0)
+    if (scaleFactor > 1.0)
         pm = pm.scaledToHeight(scaleFactor*pm.height());
+    else if (scaleFactor < 1.0)
+        pm = pm.scaledToHeight(scaleFactor*pm.height(), Qt::SmoothTransformation);
     setPixmap(pm);
     //qDebug("canvas update");
 }
@@ -100,5 +102,38 @@ Canvas:: setScale(float scale)
 {
     scaleFactor = scale;
     onCanvasUpdate(topLayer());
+}
+
+// ************************* Image Transform ***************************
+void
+Canvas:: rotate(float degree, Qt::Axis axis)
+{
+    QTransform transform;
+    transform.rotate(degree, axis);
+    emit imageChanged( topLayer().transformed(transform) );
+}
+
+void
+Canvas:: rotateLeft()
+{
+    rotate(270);
+}
+
+void
+Canvas:: rotateRight()
+{
+    rotate(90);
+}
+
+void
+Canvas:: flip()
+{
+    rotate(180, Qt::YAxis);
+}
+
+void
+Canvas:: flop()
+{
+    rotate(180, Qt::XAxis);
 }
 
