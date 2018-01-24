@@ -47,7 +47,6 @@ BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 {
     pen.setWidth(5);
     pen.setCapStyle(Qt::RoundCap);
-    //pen.setJoinStyle(Qt::RoundJoin);
 }
 
 void
@@ -115,6 +114,62 @@ void
 BrushManager:: onValueChange(int)
 {
     emit settingsChanged();
+}
+
+
+// ************************ Eraser Tool ****************************
+EraserTool:: EraserTool(QObject *parent) : Tool(parent)
+{
+    pen.setColor(Qt::white);
+    pen.setWidth(5);
+    pen.setCapStyle(Qt::RoundCap);
+}
+
+void
+EraserTool:: init(QPixmap pm, float scale, QColor, QColor )
+{
+    pixmap = pm;
+    scaleFactor = scale;
+    brushManager = new BrushManager( qobject_cast<QWidget*>(this->parent()) );
+    connect(brushManager, SIGNAL(settingsChanged()), this, SLOT(onSettingsChange()));
+}
+
+void
+EraserTool:: finish()
+{
+    brushManager->deleteLater();
+}
+
+void
+EraserTool:: onSettingsChange()
+{
+    pen.setWidth(brushManager->thicknessSlider->value());
+}
+
+void
+EraserTool:: onMousePress(QPoint pos)
+{
+    mouse_pressed = true;
+    start = pos;
+}
+
+void
+EraserTool:: onMouseRelease(QPoint)
+{
+    mouse_pressed = false;
+    emit imageChanged(pixmap);
+}
+
+void
+EraserTool:: onMouseMove(QPoint pos)
+{
+    if (!mouse_pressed) return;
+    painter.begin(&pixmap);
+    painter.setPen(pen);
+    painter.drawLine(start/scaleFactor, pos/scaleFactor);
+    painter.end();
+    emit canvasUpdated(pixmap);
+    start = pos;
 }
 
 

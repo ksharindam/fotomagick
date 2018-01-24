@@ -2,7 +2,6 @@
 #define TOOLS_H
 #include <QPixmap>
 #include <QMouseEvent>
-#include <QPoint>
 #include <QPainter>
 #include <QSlider>
 
@@ -82,6 +81,30 @@ private:
 private slots:
     void onSettingsChange();
 };
+
+// *************************** Eraser Tool ******************************
+
+
+class EraserTool : public Tool
+{
+    Q_OBJECT
+public:
+    EraserTool(QObject *parent);
+    void init(QPixmap pixmap, float scale, QColor fg, QColor bg);
+    void finish();
+    void onMousePress(QPoint);
+    void onMouseRelease(QPoint);
+    void onMouseMove(QPoint);
+private:
+    QPoint start;
+    QPen pen;
+    bool mouse_pressed = false;
+    BrushManager *brushManager;
+private slots:
+    void onSettingsChange();
+};
+
+
 
 // *************************** Floodfill Tool ***************************
 class FloodfillTool : public Tool

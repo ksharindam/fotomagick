@@ -15,12 +15,14 @@ Window:: Window()
     toolBtnGr = new QButtonGroup(this);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
     toolBtnGr->addButton(brushBtn);
+    toolBtnGr->addButton(eraserBtn);
     toolBtnGr->addButton(floodfillBtn);
     // create tools
     PencilTool *pencilTool = new PencilTool(frameColor);
     BrushTool *brushTool = new BrushTool(frameColor);
+    EraserTool *eraserTool = new EraserTool(frameColor);
     FloodfillTool *floodfillTool = new FloodfillTool(frameColor);
-    toolList << pencilTool << brushTool << floodfillTool;
+    toolList << pencilTool << brushTool << eraserTool << floodfillTool;
 
     connectSignals();
     pencilBtn->setChecked(true);
@@ -39,6 +41,9 @@ Window:: connectSignals()
     connect(actionRotate_Right, SIGNAL(triggered()), canvas, SLOT(rotateRight()));
     connect(actionFlip_Image, SIGNAL(triggered()), canvas, SLOT(flip()));
     connect(actionFlop_Image, SIGNAL(triggered()), canvas, SLOT(flop()));
+    // connect layer slots
+    connect(actionDuplicate_Layer, SIGNAL(triggered()), canvas, SLOT(duplicateLayer()));
+    connect(actionDelete_Layer, SIGNAL(triggered()), canvas, SLOT(deleteLayer()));
     // connect filters slots
     connect(actionAuto_Equalize, SIGNAL(triggered()), filters, SLOT(applyAutoEqualize()));
     connect(actionAuto_Contrast, SIGNAL(triggered()), filters, SLOT(applyAutoContrast()));

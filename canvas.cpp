@@ -90,6 +90,7 @@ Canvas:: deleteLayer()
 {
     if (layers.count()>1)
         layers.removeLast();
+    emit imageChanged(topLayer());
 }
 
 void
