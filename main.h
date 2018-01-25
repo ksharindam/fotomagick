@@ -2,7 +2,7 @@
 #define MAIN_H
 #include "ui_mainwindow.h"
 #include "canvas.h"
-#include "tools.h"
+#include "tools/tools.h"
 #include "filters.h"
 #include <QButtonGroup>
 

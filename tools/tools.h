@@ -119,6 +119,7 @@ public:
     void onMouseMove(QPoint) {};
 };
 
+void floodfill(QImage &img, int x, int y, QRgb oldColor, QRgb newColor);
 
 QT_END_NAMESPACE
 

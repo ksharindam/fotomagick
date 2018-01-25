@@ -1,4 +1,5 @@
 #include "main.h"
+#include "tools/iscissor_tool.h"
 #include <QApplication>
 #include <QFileDialog>
 #include <QDebug>
@@ -17,12 +18,14 @@ Window:: Window()
     toolBtnGr->addButton(brushBtn);
     toolBtnGr->addButton(eraserBtn);
     toolBtnGr->addButton(floodfillBtn);
+    toolBtnGr->addButton(sprayBtn);
     // create tools
     PencilTool *pencilTool = new PencilTool(frameColor);
     BrushTool *brushTool = new BrushTool(frameColor);
     EraserTool *eraserTool = new EraserTool(frameColor);
     FloodfillTool *floodfillTool = new FloodfillTool(frameColor);
-    toolList << pencilTool << brushTool << eraserTool << floodfillTool;
+    IScissorTool *iscissorTool = new IScissorTool(frameColor);
+    toolList << pencilTool << brushTool << eraserTool << floodfillTool << iscissorTool;
 
     connectSignals();
     pencilBtn->setChecked(true);

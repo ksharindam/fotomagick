@@ -9,7 +9,7 @@ INCLUDEPATH += /usr/include/GraphicsMagick
 LIBS += -lGraphicsMagick++
 
 # Input
-HEADERS += canvas.h main.h exif.h tools.h filters.h
-SOURCES += canvas.cpp main.cpp exif.cpp tools.cpp filters.cpp
+HEADERS += canvas.h main.h exif.h tools.h filters.h iscissor_tool.h
+SOURCES += canvas.cpp main.cpp exif.cpp tools.cpp filters.cpp iscissor_tool.cpp
 FORMS += mainwindow.ui
 RESOURCES += resources.qrc
