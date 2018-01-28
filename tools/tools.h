@@ -34,6 +34,7 @@ signals:
     void maskCreated(QImage);       // for selection tools only
 };
 
+//************************* Pencil Tool ************************
 class PencilTool : public Tool
 {
     Q_OBJECT
@@ -119,7 +120,7 @@ public:
     void onMouseMove(QPoint) {};
 };
 
-void floodfill(QImage &img, int x, int y, QRgb oldColor, QRgb newColor);
+void floodfill(QImage &img, int x, int y, QRgb newColor);
 
 QT_END_NAMESPACE
 

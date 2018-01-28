@@ -5,7 +5,7 @@
 //#include <QBrush>
 //#include <QLinearGradient>
 //#include <cmath>
-
+#include <QDebug>
 // ****************** Pencil Tool ********************* //
 
 void
@@ -178,9 +178,11 @@ EraserTool:: onMouseMove(QPoint pos)
    Source : http://lodev.org/cgtutor/floodfill.html#Scanline_Floodfill_Algorithm_With_Stack
 */
 void
-floodfill(QImage &img, int x, int y, QRgb oldColor, QRgb newColor)
+floodfill(QImage &img, int x, int y, QRgb newColor)
 {
+  QRgb oldColor = img.pixel(x,y);
   if (oldColor == newColor) return;
+  qDebug() << "flood fill" << x << y;
   int w = img.width();
   int h = img.height();
   std::vector<QPoint> q;
@@ -238,7 +240,7 @@ void
 FloodfillTool:: onMousePress(QPoint pos)
 {
     QImage img = pixmap.toImage();
-    floodfill(img, pos.x()/scaleFactor, pos.y()/scaleFactor, img.pixel(pos), fg_color.rgb());
+    floodfill(img, pos.x()/scaleFactor, pos.y()/scaleFactor, fg_color.rgb());
     pixmap = QPixmap::fromImage(img);
     emit imageChanged(pixmap);
 }

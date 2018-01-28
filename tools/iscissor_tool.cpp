@@ -1,7 +1,7 @@
 #include "iscissor_tool.h"
 #include <QBitmap>
 #include <cmath>
-
+#include <QDebug>
 
 void
 IScissorTool:: init(QPixmap pm, float scale, QColor, QColor )
@@ -61,10 +61,8 @@ IScissorTool:: onMouseMove(QPoint pos)
 
     priority_queue<Node> que;
     que.push(node_vector[seed_num]);
-    int count =0;
     while (!que.empty())
     {
-        count++;
         Node q = que.top();                 // This is node with minimum total cost
         que.pop();
         if (node_vector[q.num].state == EXPANDED)
@@ -226,12 +224,12 @@ IScissorTool:: getMask(int x, int y)
             mask.setPixel(pt, Qt::black);
         }
     }
-    floodfill(mask, x, y, Qt::white, Qt::black);
+    floodfill(mask, x, y, qRgb(0, 0, 0));
     // Erase the boundary line by putting white points
     for (int i=0; i<(int)fullPath_vector.size();i++) {
         for (int j=0;j<(int)fullPath_vector[i].size();j++) {
             QPoint pt = fullPath_vector[i][j];
-            mask.setPixel(pt, Qt::white);
+            mask.setPixel(pt, qRgb(255,255,255));
         }
     }
     QPixmap pm = QPixmap::fromImage(image);
