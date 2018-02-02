@@ -36,7 +36,10 @@ public:
     IScissorTool(QObject *parent) : Tool(parent) {};
     void init(QPixmap pixmap, float scale, QColor fg, QColor bg);
     void finish() {};
-protected:
+    void onMousePress(QPoint);
+    void onMouseRelease(QPoint) {};
+    void onMouseMove(QPoint);
+private:
     bool init_seed;     // If first seed placed
     bool is_start;
     bool is_closed;     // If boundary is closed
@@ -55,14 +58,6 @@ protected:
     void closeDetect(int x, int y);
     void getMask(int x, int y);
     void getGradientMap();
-public slots:
-    void onMousePress(QPoint);
-    void onMouseRelease(QPoint) {};
-    void onMouseMove(QPoint);
-signals:
-    void imageChanged(QPixmap);
-    void canvasUpdated(QPixmap);
-    void maskCreated(QImage);
 };
 
 

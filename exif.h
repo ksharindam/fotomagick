@@ -49,8 +49,6 @@ typedef unsigned int  rint32u;
 #include <QList>
 #include <QDebug>
 #include <QByteArray>
-#include <QList>
-#include <QByteArray>
 
 
 class Exif{
@@ -58,8 +56,6 @@ public:
     Exif();
     ~Exif();
     int getExifOrientation(QFile &file, int *Orientation);
-    int readJpegFile(QFile &file, int *Orientation);
-    int readJpegSections(QFile &file, int *Orientation);
     int processEXIF(QByteArray *barr, int itemlen, int *Orientation);
     int processEXIFDir(const char *dirStart, const char *offsetBase, rint32u size, rint32u nesting, int MotorolaOrder, int *numOrientations, int *Orientation);
 };

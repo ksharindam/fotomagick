@@ -3,8 +3,6 @@
 *.o
 
 # Autocreated source files
-moc_*
-qrc_*
-ui_*
+build/*
 Makefile
 fotomagick
