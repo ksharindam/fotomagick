@@ -53,6 +53,7 @@ Window:: connectSignals()
     // connect filters slots
     connect(actionAuto_Equalize, SIGNAL(triggered()), filters, SLOT(applyAutoEqualize()));
     connect(actionAuto_Contrast, SIGNAL(triggered()), filters, SLOT(applyAutoContrast()));
+    connect(actionGray_Scale, SIGNAL(triggered()), filters, SLOT(applyGrayScale()));
     // signals from tool buttons
     connect(toolBtnGr, SIGNAL(buttonClicked(int)), this, SLOT(onToolClick(int)));
     foreach (Tool *tool, toolList) {

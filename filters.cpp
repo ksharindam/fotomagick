@@ -36,3 +36,17 @@ Filters:: applyAutoContrast()
     emit imageChanged(QPixmap::fromImage(modifiedImage));
 }
 
+void
+Filters:: applyGrayScale()
+{
+    QImage img = pixmap.toImage();
+    for (int y=0;y<img.height();y++) {
+        QRgb* line = ((QRgb*)img.scanLine(y));
+        for (int x=0;x<img.width();x++) {
+            int val = qGray(line[x]);
+            line[x] = qRgba(val,val,val, qAlpha(line[x]));
+        }
+    }
+    emit imageChanged(QPixmap::fromImage(img));
+}
+

@@ -14,6 +14,7 @@ public:
 public slots:
     void applyAutoEqualize();
     void applyAutoContrast();
+    void applyGrayScale();
 signals:
     void imageChanged(QPixmap);
 };

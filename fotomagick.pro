@@ -8,7 +8,7 @@ MOC_DIR = build
 RCC_DIR = build
 UI_DIR = build
 OBJECTS_DIR = build
-
+mytarget.commands += $${QMAKE_MKDIR} build
 
 # Input
 HEADERS += canvas.h main.h exif.h filters.h \

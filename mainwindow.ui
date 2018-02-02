@@ -241,6 +241,7 @@
     </property>
     <addaction name="actionAuto_Equalize"/>
     <addaction name="actionAuto_Contrast"/>
+    <addaction name="actionGray_Scale"/>
    </widget>
    <widget class="QMenu" name="menuLayer">
     <property name="title">
@@ -375,6 +376,11 @@
   <action name="actionAuto_Contrast">
    <property name="text">
     <string>Auto Contrast</string>
+   </property>
+  </action>
+  <action name="actionGray_Scale">
+   <property name="text">
+    <string>Gray Scale</string>
    </property>
   </action>
  </widget>
