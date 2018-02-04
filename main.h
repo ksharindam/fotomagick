@@ -9,6 +9,21 @@
 
 QT_BEGIN_NAMESPACE
 
+class ColorChooser : public QLabel
+{
+    Q_OBJECT
+public:
+    QColor fg_color;
+    QColor bg_color;
+
+    ColorChooser(QWidget *parent);
+    void mousePressEvent(QMouseEvent *ev);
+private:
+    void setColors();
+signals:
+    void colorChanged();
+};
+
 
 class Window : public QMainWindow, Ui_MainWindow
 {
@@ -20,11 +35,13 @@ private slots:
     void openFile();
     void saveFile();
     void onToolClick(int);
+    void onColorChange();
     void onImageChange(QPixmap);
     void onImageChange(QImage image) { onImageChange(QPixmap::fromImage(image)); };
     void zoomIn();
     void zoomOut();
 private:
+    ColorChooser *colorChooser;
     Canvas *canvas;
     Filters *filters;
     QList<Tool*> toolList;

@@ -129,12 +129,12 @@ Canvas:: rotateRight()
 void
 Canvas:: flip()
 {
-    rotate(180, Qt::YAxis);
+    rotate(180, Qt::XAxis);
 }
 
 void
 Canvas:: flop()
 {
-    rotate(180, Qt::XAxis);
+    rotate(180, Qt::YAxis);
 }
 

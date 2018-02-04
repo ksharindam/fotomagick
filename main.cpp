@@ -3,6 +3,7 @@
 #include "tools/grabcut_tool.h"
 #include <QApplication>
 #include <QFileDialog>
+#include <QColorDialog>
 #include <QDebug>
 
 Window:: Window()
@@ -10,6 +11,8 @@ Window:: Window()
     setupUi(this);
     QHBoxLayout *layout = new QHBoxLayout(scrollAreaWidgetContents);
     layout->setContentsMargins(0, 0, 0, 0);
+    colorChooser = new ColorChooser(frameColor);
+    frameColor->layout()->addWidget(colorChooser);
     canvas = new Canvas(this);
     layout->addWidget(canvas);
     filters = new Filters(this);
@@ -63,6 +66,7 @@ Window:: connectSignals()
     // signals from tools and layer_manager
     connect(filters, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap))); // TODO : use qimage
     connect(canvas, SIGNAL(imageChanged(QPixmap)), this, SLOT(onImageChange(QPixmap)));
+    connect(colorChooser, SIGNAL(colorChanged()), this, SLOT(onColorChange()));
 }
 
 void
@@ -75,11 +79,18 @@ Window:: onToolClick(int btn_id)
         disconnect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[prev_btn], SLOT(onMouseRelease(QPoint)));
         disconnect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[prev_btn], SLOT(onMouseMove(QPoint)));
     }
-    toolList[abs(btn_id)-2]->init(canvas->topLayer(), canvas->scaleFactor,Qt::black, Qt::white);
+    toolList[abs(btn_id)-2]->init(canvas->topLayer(), canvas->scaleFactor,colorChooser->fg_color, colorChooser->bg_color);
     connect(canvas, SIGNAL(mousePressed(QPoint)), toolList[abs(btn_id)-2], SLOT(onMousePress(QPoint)));
     connect(canvas, SIGNAL(mouseReleased(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseRelease(QPoint)));
     connect(canvas, SIGNAL(mouseMoved(QPoint)), toolList[abs(btn_id)-2], SLOT(onMouseMove(QPoint)));
     prev_btn = btn_id;
+}
+
+void
+Window:: onColorChange()
+{
+    toolList[abs(prev_btn)-2]->fg_color = colorChooser->fg_color;
+    toolList[abs(prev_btn)-2]->bg_color = colorChooser->bg_color;
 }
 
 void
@@ -136,7 +147,51 @@ Window:: saveFile()
         canvas->topLayer().save(filename);
 }
 
+// *********************** Color Chooser Widget **********************
+ColorChooser:: ColorChooser(QWidget *parent) : QLabel(parent)
+{
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setMouseTracking(true);
+    fg_color = Qt::black;
+    bg_color = Qt::white;
+    setColors();
+}
 
+void
+ColorChooser:: mousePressEvent(QMouseEvent *ev)
+{
+    QColor color;
+    if ( QRect(0,0,25,24).contains(ev->pos()) ) {
+        color = QColorDialog::getColor(fg_color, this);
+        if (color.isValid()) {
+            fg_color = color;
+            emit colorChanged();
+        }
+    }
+    else {
+        color = QColorDialog::getColor(bg_color, this);
+        if (color.isValid()) {
+            bg_color = color;
+            emit colorChanged();
+        }
+    }
+    setColors();
+}
+
+void
+ColorChooser:: setColors()
+{
+    QPixmap pm(50, 24);
+    pm.fill(bg_color);
+    QPainter painter(&pm);
+    painter.setPen(fg_color);
+    painter.setBrush(fg_color);
+    painter.drawRect(0,0,24,23);
+    painter.end();
+    setPixmap(pm);
+}
+
+// ********************* Main Function *******************
 int main(int argc, char *argv[])
 {
     Magick::InitializeMagick(*argv);
