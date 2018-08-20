@@ -13,8 +13,6 @@ QT_BEGIN_NAMESPACE
 #define EXPANDED 2
 #define INF 1000000
 #define CLOSETHRES 6
-#define MIN(a,b) (((a)<(b))?(a):(b))
-#define MAX(a,b) (((a)>(b))?(a):(b))
 
 struct Node {
     double linkCost[9];

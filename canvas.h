@@ -1,26 +1,31 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
-#include <QLabel>
-#include <QMouseEvent>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsSceneMouseEvent>
 
 QT_BEGIN_NAMESPACE
 
 // TODO : Add undo manager
-class Canvas : public QLabel
+class Canvas : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    Canvas(QWidget *parent);
+    Canvas(QGraphicsView *parent);
     float scaleFactor = 1.0;
 
     QPixmap topLayer();
     void setScale(float scale);
+    void setPixmap(QPixmap pm);
     void setImage(QImage image);
-    void mousePressEvent(QMouseEvent *ev);
-    void mouseReleaseEvent(QMouseEvent *ev);
-    void mouseMoveEvent(QMouseEvent *ev);
+    void mousePressEvent(QGraphicsSceneMouseEvent *ev);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *ev);
 private:
+    //QGraphicsView *view;
+    QGraphicsPixmapItem *pixmapItem;
     QList<QPixmap> layers;
     QList<QPoint> layersPosition;
     void compositeLayers();

@@ -1,27 +1,39 @@
 #include "canvas.h"
+#include <QDebug>
 
-Canvas:: Canvas(QWidget *parent) : QLabel(parent)
+Canvas:: Canvas(QGraphicsView *parent) : QGraphicsScene(parent)
 {
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setMouseTracking(true);
+    parent->setMouseTracking(true);
+    //view = parent;
+    parent->setScene(this);
+    pixmapItem = addPixmap(QPixmap());
+    //pixmapItem->setAcceptHoverEvents(true);
 }
 
 void
-Canvas:: mousePressEvent(QMouseEvent *ev)
+Canvas:: mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
-    emit mousePressed(ev->pos());
+    emit mousePressed(ev->scenePos().toPoint());
+    qDebug() << "mouse pressed" << ev->scenePos().x() << ev->scenePos().y() ;
 }
 
 void
-Canvas:: mouseReleaseEvent(QMouseEvent *ev)
+Canvas:: mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
 {
-    emit mouseReleased(ev->pos());
+    emit mouseReleased(ev->scenePos().toPoint());
 }
 
 void
-Canvas:: mouseMoveEvent(QMouseEvent *ev)
+Canvas:: mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
 {
-    emit mouseMoved(ev->pos());
+    emit mouseMoved(ev->scenePos().toPoint());
+}
+
+void
+Canvas:: setPixmap(QPixmap pm)
+{
+    pixmapItem->setPixmap(pm);
+    //setSceneRect(pm.rect());
 }
 
 void

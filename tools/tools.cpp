@@ -3,9 +3,27 @@
 #include <QVBoxLayout>
 #include <vector>
 //#include <QBrush>
-//#include <QLinearGradient>
+#include <QLinearGradient>
 //#include <cmath>
 #include <QDebug>
+
+cv::Mat qImage2Mat(QImage img)
+{
+    if (img.format()!=QImage::Format_RGB888)
+        img = img.convertToFormat(QImage::Format_RGB888);
+
+    cv::Mat tmp(img.height(), img.width(), CV_8UC3, (uchar*)img.bits(), img.bytesPerLine());
+    cv::Mat mat;
+    cv::cvtColor(tmp, mat , CV_BGR2RGB);
+    return mat;
+}
+
+QImage mat2QImage(cv::Mat const& mat)
+{
+    QImage img((const uchar*)mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+    return img.rgbSwapped();
+}
+
 // ****************** Pencil Tool ********************* //
 
 void
@@ -46,7 +64,7 @@ PencilTool:: onMouseMove(QPoint pos)
 
 BrushTool:: BrushTool(QObject *parent) : Tool(parent)
 {
-    pen.setWidth(5);
+    pen.setWidth(30);
     pen.setCapStyle(Qt::RoundCap);
 }
 

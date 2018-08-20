@@ -8,3 +8,7 @@ moc_*
 qrc_*
 Makefile
 fotomagick
+
+# User created directories
+build/
+cache/

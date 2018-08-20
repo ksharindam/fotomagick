@@ -1,28 +1,17 @@
 <RCC>
   <qresource>
-    <file>icons/rectangle.png</file>
-    <file>icons/roundedrect.png</file>
-    <file>icons/arc.png</file>
+    <file>icons/pencil.png</file>
     <file>icons/brush.png</file>
     <file>icons/eraser.png</file>
     <file>icons/spray.png</file>
     <file>icons/floodfill.png</file>
-    <file>icons/line.png</file>
-    <file>icons/curve.png</file>
-    <file>icons/oval.png</file>
-    <file>icons/circle.png</file>
-    <file>icons/pencil.png</file>
-    <file>icons/polygon.png</file>
-    <file>icons/polyline.png</file>
     <file>icons/text.png</file>
+    <file>icons/iscissor.png</file>
+    <file>icons/free-select.png</file>
+    <file>icons/grabcut.png</file>
     <file>icons/color_picker.png</file>
     <file>icons/undo.png</file>
     <file>icons/redo.png</file>
-    <file>icons/brick.png</file>
-    <file>icons/zigzag.png</file>
-    <file>icons/dots.png</file>
-    <file>icons/densedots.png</file>
-    <file>icons/hlines.png</file>
     <file>icons/cursor_plus.png</file>
     <file>icons/cursor_pencil.png</file>
   </qresource>

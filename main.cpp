@@ -9,21 +9,20 @@
 Window:: Window()
 {
     setupUi(this);
-    QHBoxLayout *layout = new QHBoxLayout(scrollAreaWidgetContents);
-    layout->setContentsMargins(0, 0, 0, 0);
     colorChooser = new ColorChooser(frameColor);
     frameColor->layout()->addWidget(colorChooser);
-    canvas = new Canvas(this);
-    layout->addWidget(canvas);
+    canvas = new Canvas(graphicsView);
     filters = new Filters(this);
     // group all tool buttons 
     toolBtnGr = new QButtonGroup(this);
+    toolBtnGr->addButton(grabcutBtn);
+    toolBtnGr->addButton(iscissorBtn);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
     toolBtnGr->addButton(brushBtn);
     toolBtnGr->addButton(eraserBtn);
     toolBtnGr->addButton(floodfillBtn);
-    toolBtnGr->addButton(sprayBtn);
-    toolBtnGr->addButton(textBtn);
+    /*toolBtnGr->addButton(sprayBtn);
+    toolBtnGr->addButton(textBtn);*/
     // create tools
     PencilTool *pencilTool = new PencilTool(frameColor);
     BrushTool *brushTool = new BrushTool(frameColor);
@@ -31,11 +30,11 @@ Window:: Window()
     FloodfillTool *floodfillTool = new FloodfillTool(frameColor);
     IScissorTool *iscissorTool = new IScissorTool(frameColor);
     GrabcutTool *grabcutTool = new GrabcutTool(frameColor);
-    toolList << pencilTool << brushTool << eraserTool << floodfillTool << iscissorTool << grabcutTool;
+    toolList << grabcutTool << iscissorTool << pencilTool << brushTool << eraserTool << floodfillTool;
 
     connectSignals();
     pencilBtn->setChecked(true);
-    onToolClick(-2);
+    onToolClick(-4);
 }
 
 void
@@ -198,7 +197,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     Window *win = new Window();
     win->resize(640, 600);
-    win->openFile("/home/subha/Arindam.jpg");
+    win->openFile("/home/me/Arindam.jpg");
     win->show();
     return app.exec();
 }

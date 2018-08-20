@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PicsMagick</string>
+   <string>Fotomagick</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/brush.png</normaloff>:/icons/brush.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
@@ -26,7 +30,7 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="1" column="0">
+         <item row="3" column="0">
           <widget class="QPushButton" name="pencilBtn">
            <property name="toolTip">
             <string>Pencil</string>
@@ -37,8 +41,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>32</width>
-             <height>32</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="checkable">
@@ -46,7 +50,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="3" column="1">
           <widget class="QPushButton" name="brushBtn">
            <property name="toolTip">
             <string>Brush</string>
@@ -57,8 +61,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>32</width>
-             <height>32</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="checkable">
@@ -66,14 +70,14 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0" colspan="3">
+         <item row="2" column="0" colspan="3">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>&lt;b&gt;Drawing Tools&lt;b&gt;</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="4" column="0">
           <widget class="QPushButton" name="floodfillBtn">
            <property name="toolTip">
             <string>Floodfill</string>
@@ -84,8 +88,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>32</width>
-             <height>32</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="checkable">
@@ -93,7 +97,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="3" column="2">
           <widget class="QPushButton" name="eraserBtn">
            <property name="toolTip">
             <string>Eraser</string>
@@ -107,8 +111,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>32</width>
-             <height>32</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="checkable">
@@ -116,7 +120,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="4" column="1">
           <widget class="QPushButton" name="sprayBtn">
            <property name="toolTip">
             <string>Color Spray</string>
@@ -130,8 +134,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>32</width>
-             <height>32</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="checkable">
@@ -139,8 +143,11 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
+         <item row="4" column="2">
           <widget class="QPushButton" name="textBtn">
+           <property name="toolTip">
+            <string>Add Text Tool</string>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -150,8 +157,84 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>32</width>
-             <height>32</height>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="3">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>&lt;b&gt;Selection Tools&lt;/b&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="freeselectBtn">
+           <property name="toolTip">
+            <string>Freeselect tool with edge snapping</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/free-select.png</normaloff>:/icons/free-select.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="grabcutBtn">
+           <property name="toolTip">
+            <string>Extract foreground object</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/grabcut.png</normaloff>:/icons/grabcut.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="iscissorBtn">
+           <property name="toolTip">
+            <string>Intelligent scissor Tool</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/icons/iscissor.png</normaloff>:/icons/iscissor.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="checkable">
@@ -189,24 +272,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>396</width>
-         <height>436</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
+     <widget class="QGraphicsView" name="graphicsView"/>
     </item>
    </layout>
   </widget>

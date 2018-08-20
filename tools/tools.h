@@ -1,11 +1,18 @@
 #ifndef TOOLS_H
 #define TOOLS_H
+
+#include <core/core.hpp>
+#include <imgproc/imgproc.hpp>
+
 #include <QPixmap>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QSlider>
 
 QT_BEGIN_NAMESPACE
+
+cv::Mat qImage2Mat(QImage img);
+QImage  mat2QImage(cv::Mat const& mat);
 
 /* This is the base class for all tools
 TODO : manage image scaling

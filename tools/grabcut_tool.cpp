@@ -1,5 +1,4 @@
 #include "grabcut_tool.h"
-#include <opencv2/imgproc/imgproc.hpp>
 #include <QDebug>
 
 void
@@ -25,11 +24,11 @@ GrabcutTool:: onMouseRelease(QPoint pos)
 
     cv::Rect rect(old_pos.x(), old_pos.y(), pos.x()-old_pos.x(), pos.y()-old_pos.y());
     cv::Mat cv_img, mask, mask2, bgdModel, fgdModel;
-    cv_img = QImage2Mat(pixmap.toImage());
+    cv_img = qImage2Mat(pixmap.toImage());
     cv::grabCut(cv_img, mask, rect, bgdModel, fgdModel, 1, cv::GC_INIT_WITH_RECT);
     cv::compare(mask, cv::GC_PR_FGD, mask, cv::CMP_EQ);
     cv_img.copyTo(mask2, mask);
-    QImage result = Mat2QImage(mask2);
+    QImage result = mat2QImage(mask2);
     //result.save("mask.png");
     emit canvasUpdated(pixmap);
 }
@@ -45,19 +44,3 @@ GrabcutTool:: onMouseMove(QPoint pos)
     emit canvasUpdated(pm);
 }
 
-cv::Mat QImage2Mat(QImage img)
-{
-    if (img.format()!=QImage::Format_RGB888)
-        img = img.convertToFormat(QImage::Format_RGB888);
-
-    cv::Mat tmp(img.height(), img.width(), CV_8UC3, (uchar*)img.bits(), img.bytesPerLine());
-    cv::Mat mat;
-    cv::cvtColor(tmp, mat , CV_BGR2RGB);
-    return mat;
-}
-
-QImage Mat2QImage(cv::Mat const& mat)
-{
-    QImage img((const uchar*)mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
-    return img.rgbSwapped();
-}

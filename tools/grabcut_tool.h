@@ -2,7 +2,6 @@
 #define GRABCUT_TOOL_H
 
 #include "tools.h"
-#include <opencv2//core/core.hpp>
 
 QT_BEGIN_NAMESPACE
 
@@ -22,9 +21,6 @@ private:
     bool mouse_pressed=false;
 
 };
-
-cv::Mat QImage2Mat(QImage img);
-QImage  Mat2QImage(cv::Mat const& mat);
 
 QT_END_NAMESPACE
 
