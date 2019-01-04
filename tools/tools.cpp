@@ -7,7 +7,7 @@
 //#include <cmath>
 #include <QDebug>
 
-cv::Mat qImage2Mat(QImage img)
+/*cv::Mat qImage2Mat(QImage img)
 {
     if (img.format()!=QImage::Format_RGB888)
         img = img.convertToFormat(QImage::Format_RGB888);
@@ -22,7 +22,7 @@ QImage mat2QImage(cv::Mat const& mat)
 {
     QImage img((const uchar*)mat.data, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
     return img.rgbSwapped();
-}
+}*/
 
 // ****************** Pencil Tool ********************* //
 

@@ -8,13 +8,13 @@ gimp is not user friendly.
 it does not have add frame feature.  
 
 ## Build
-**dependency :**
+**dependency :**  
 * libgraphicsmagick++1-dev  
 * libopencv-core-dev  
 * libopencv-imgproc-dev  
 
 To build type the following commands ...  
-`qmake`
+`qmake`  
 `make -j4`
 
 ## My planned features...

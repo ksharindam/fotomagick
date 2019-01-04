@@ -1,6 +1,5 @@
 #include "main.h"
 #include "tools/iscissor_tool.h"
-#include "tools/grabcut_tool.h"
 #include <QApplication>
 #include <QFileDialog>
 #include <QColorDialog>
@@ -15,7 +14,6 @@ Window:: Window()
     filters = new Filters(this);
     // group all tool buttons 
     toolBtnGr = new QButtonGroup(this);
-    toolBtnGr->addButton(grabcutBtn);
     toolBtnGr->addButton(iscissorBtn);
     toolBtnGr->addButton(pencilBtn);    // Button ids are added in this order... -2,-3,-4...
     toolBtnGr->addButton(brushBtn);
@@ -29,8 +27,7 @@ Window:: Window()
     EraserTool *eraserTool = new EraserTool(frameColor);
     FloodfillTool *floodfillTool = new FloodfillTool(frameColor);
     IScissorTool *iscissorTool = new IScissorTool(frameColor);
-    GrabcutTool *grabcutTool = new GrabcutTool(frameColor);
-    toolList << grabcutTool << iscissorTool << pencilTool << brushTool << eraserTool << floodfillTool;
+    toolList << iscissorTool << pencilTool << brushTool << eraserTool << floodfillTool;
 
     connectSignals();
     pencilBtn->setChecked(true);

@@ -33,7 +33,7 @@ void
 Canvas:: setPixmap(QPixmap pm)
 {
     pixmapItem->setPixmap(pm);
-    //setSceneRect(pm.rect());
+    setSceneRect(pm.rect());
 }
 
 void
